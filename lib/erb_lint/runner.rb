@@ -15,10 +15,11 @@ module ERBLint
     end
 
     def run(file)
+      file_tree = Parser.parse(file)
       @linters.map do |linter|
         {
           linter_name: linter.class.simple_name,
-          errors: linter.lint_file(file)
+          errors: linter.lint_file(file_tree)
         }
       end
     end

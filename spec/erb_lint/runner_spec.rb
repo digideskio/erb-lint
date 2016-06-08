@@ -25,6 +25,7 @@ describe ERBLint::Runner do
 
   describe '#run' do
     let(:file) { 'DummyFileContent' }
+    let(:file_tree) { 'DummyFileTree' }
     subject { runner.run(file) }
 
     fake_linter_1_errors = ['FakeLinter1DummyErrors']
@@ -32,12 +33,14 @@ describe ERBLint::Runner do
     fake_final_newline_errors = ['FakeFinalNewlineDummyErrors']
 
     before do
+      allow(ERBLint::Parser).to receive(:parse)
+        .with(file).and_return file_tree
       allow_any_instance_of(ERBLint::Linter::FakeLinter1).to receive(:lint_file)
-        .with(file).and_return fake_linter_1_errors
+        .with(file_tree).and_return fake_linter_1_errors
       allow_any_instance_of(ERBLint::Linter::FakeLinter2).to receive(:lint_file)
-        .with(file).and_return fake_linter_2_errors
+        .with(file_tree).and_return fake_linter_2_errors
       allow_any_instance_of(ERBLint::Linter::FinalNewline).to receive(:lint_file)
-        .with(file).and_return fake_final_newline_errors
+        .with(file_tree).and_return fake_final_newline_errors
     end
 
     context 'when all linters are enabled' do
