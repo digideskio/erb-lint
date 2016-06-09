@@ -12,6 +12,8 @@ module ERBLint
         linter_config = @config['linters'][linter_class.simple_name]
         linter_class.new(linter_config)
       end
+      require 'pry'
+      binding.pry
     end
 
     def run(file)
