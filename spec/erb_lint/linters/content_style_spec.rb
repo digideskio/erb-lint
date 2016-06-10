@@ -19,6 +19,8 @@ describe ERBLint::Linter::ContentStyle do
   violation_set_2 = ['^((?!Shopify Help Center).)*[Hh]elp [Cc]enter']
   suggestion_2 = 'Shopify Help Center'
   violation_condensed_2 = 'help center'
+  violation_set_3 = ['lite plan', '[Ll]ight [Pp]lan']
+  suggestion_3 = 'Lite plan'
 
   let(:rule_set) do
     [
@@ -30,22 +32,24 @@ describe ERBLint::Linter::ContentStyle do
         'violation' => violation_set_2,
         'suggestion' => suggestion_2,
         'violation_condensed' => violation_condensed_2
+      },
+      {
+        'violation' => violation_set_3,
+        'suggestion' => suggestion_3
       }
     ]
   end
 
   context 'when the file contains a violation from set 1 or 2' do
     let(:file) { <<~FILE }
-      <div>
-        The dropdown menu and the Drop down menu, and the Shopify help center are not part of the plan.
-      </div>
-      <h1>
-        heading text
-      </h1>
+      <p>You have tried Coke Zero, so now try the Shopify Light Plan</p>
+      <p>The dropdown menu and the Drop down menu are cool.</p>
+      <p>The Shopify help center increases conversion!</p>
+
     FILE
 
-    it 'reports 3 errors' do
-      expect(linter_errors.size).to eq 3
+    it 'reports 4 errors' do
+      expect(linter_errors.size).to eq 4
     end
   end
 end

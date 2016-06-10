@@ -29,12 +29,16 @@ module ERBLint
         errors = []
         html_elements = Nokogiri::XML::NodeSet.new(file_tree.document, Parser.filter_erb_nodes(file_tree))
         inner_text = html_elements.children.select { |node| node.text? }
-        inner_text = inner_text || ''
+        inner_text = inner_text || []
         outer_text = file_tree.children.select { |node| node.text? }
-        outer_text = outer_text || ''
-        all_text = (outer_text + inner_text).to_s
-        line_number = 6
-        errors.push(*generate_errors(all_text, line_number))
+        outer_text = outer_text || []
+        all_text = (outer_text + inner_text)
+
+        # Assumes the immediate parent is on the same line for demo purposes, otherwise hardcode line_number
+        all_text.each do |text_node|
+          line_number = text_node.parent.line if !text_node.parent.nil?
+          errors.push(*generate_errors(text_node.text, line_number))
+        end
         errors
       end
 
@@ -42,15 +46,15 @@ module ERBLint
 
       def generate_errors(all_text, line_number)
         violated_rules(all_text).map do |violated_rule|
-              suggestion = "#{violated_rule[:suggestion]}".rstrip
-              violation = "#{violated_rule[:violating_pattern]}".rstrip
-              violation_string = "#{violated_rule[:violation_string]}".rstrip
+              suggestion = violated_rule[:suggestion]
+              violation = violated_rule[:violating_pattern]
+              violation_string = violated_rule[:violation_string]
               unless violation_string == ''
                 violation = violation_string
               end
           {
             line: line_number,
-            message: "Do use '#{suggestion}'. Don't use '#{violation}'. #{@addendum}".strip
+            message: "Do use `#{suggestion}`. Don't use `#{violation}`. #{@addendum}".strip
           }
         end
       end
