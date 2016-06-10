@@ -33,7 +33,7 @@ module ERBLint
         outer_text = file_tree.children.select { |node| node.text? }
         outer_text = outer_text || ''
         all_text = (outer_text + inner_text).to_s
-        line_number = '6'
+        line_number = 6
         errors.push(*generate_errors(all_text, line_number))
         errors
       end
