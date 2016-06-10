@@ -10,10 +10,12 @@ module ERBLint
         @content_ruleset = []
         config.fetch('rule_set', []).each do |rule|
           suggestion = rule.fetch('suggestion', '')
-          rule.fetch('violation', []).each do |violating_text|
+          violation_string = rule.fetch('violation_condensed', '')
+          rule.fetch('violation', []).each do |violating_pattern|
             @content_ruleset.push(
-              violating_text: violating_text,
-              suggestion: suggestion
+              violating_pattern: violating_pattern,
+              suggestion: suggestion,
+              violation_string: violation_string
             )
           end
         end
@@ -39,17 +41,22 @@ module ERBLint
 
       def generate_errors(all_text, line_number)
         violated_rules(all_text).map do |violated_rule|
-          suggestion = "#{violated_rule[:suggestion]}".rstrip
+              suggestion = "#{violated_rule[:suggestion]}".rstrip
+              violation = "#{violated_rule[:violating_pattern]}".rstrip
+              violation_string = "#{violated_rule[:violation_string]}".rstrip
+              unless violation_string == ''
+                violation = violation_string
+              end
           {
             line: line_number,
-            message: "Do use #{suggestion}. Don't use #{violated_rule[:violating_text]}. #{@addendum}".strip
+            message: "Do use '#{suggestion}'. Don't use '#{violation}'. #{@addendum}".strip
           }
         end
       end
 
       def violated_rules(all_text)
         @content_ruleset.select do |content_rule|
-          /#{content_rule[:violating_text]}/.match(all_text)
+          /#{content_rule[:violating_pattern]}/.match(all_text)
         end
       end
     end
