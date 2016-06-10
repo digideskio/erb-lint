@@ -11,7 +11,8 @@ module ERBLint
         config.fetch('rule_set', []).each do |rule|
           suggestion = rule.fetch('suggestion', '')
           violation_string = rule.fetch('violation_condensed', '')
-          rule.fetch('violation', []).each do |violating_pattern|
+          violation = rule.fetch('violation', [])
+          (violation.kind_of?(String) ? [violation] : violation).each do |violating_pattern|
             @content_ruleset.push(
               violating_pattern: violating_pattern,
               suggestion: suggestion,
