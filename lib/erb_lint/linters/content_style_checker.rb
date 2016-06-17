@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'pry'
+
 module ERBLint
   class Linter
     # Checks for content style guide violations in the text nodes of HTML files.
@@ -59,29 +61,18 @@ module ERBLint
         @content_ruleset.select do |content_rule|
           violation = content_rule[:violating_pattern]
           suggestion = content_rule[:suggestion]
-          violation_in_suggestion_i = /^(?:(?!#{suggestion}).)*(#{violation}\b)/i.match(all_text)
-            # E.g., for violation "hyperlink" and suggestion "internets hyperlink", ignore "internets hyperlink"
-          violation_in_suggestion = /^(?:(?!#{suggestion}).)*(#{violation}\b)/.match(all_text)
-          ignore_starting_caps = /\w App/.match(all_text)
-            # E.g., for violation "App" and suggestion "app", ignore starts of strings or sentences.
-          case_insensitive = /(#{violation})\b/i.match(all_text)
-          case_sensitive = /(#{violation})\b/.match(all_text)
+          all_text = all_text.gsub(/#{suggestion}/, '')
+          ignore_starting_caps = /\w #{violation}\b/
+          case_s = /(#{violation})\b/
+          case_i = /(#{violation})\b/i
+          lc_suggestion_uc_violation = suggestion.match(/\p{Lower}/) && !violation.match(/\p{Lower}/)
+          # binding.pry
           if content_rule[:case_insensitive] == 'true'
-            # if rule is marked case_insensitive
-            if /#{violation}/.match(suggestion)
-              # if violation is contained in suggestion
-              violation_in_suggestion_i
-            else
-              case_insensitive
-            end
-          elsif /#{violation}/.match(suggestion)
-            # if violation is contained in suggestion
-            violation_in_suggestion
-          elsif suggestion[0,1] == suggestion[0,1].downcase && violation[0,1] == violation[0,1].upcase
-            # if suggestion starts with a lowercase letter and violation starts with an uppercase letter
-            ignore_starting_caps
+            case_i.match(all_text)
+          elsif content_rule[:case_insensitive] != 'true' && lc_suggestion_uc_violation
+            ignore_starting_caps.match(all_text)
           else
-            case_sensitive
+            case_s.match(all_text)
           end
         end
       end

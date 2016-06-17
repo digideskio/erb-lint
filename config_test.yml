@@ -1,0 +1,469 @@
+---
+
+# TODO: Merge plurals to (s) form in suggestion
+# TODO: sort out the edge cases that I've commented out, mostly ones that have more than one capital letter
+
+- violation: 
+    - 'Shopify partner'
+    - 'Shopify partners'
+  suggestion: 'Shopify Partner(s)'
+
+- violation:
+    - 'manual'
+    - 'Shopify manual'
+    - 'docs'
+    - 'documentation'
+    - 'support docs'
+  case_insensitive: 'true'
+  suggestion: 'Shopify Help Center'
+
+- violation:
+    - 'Help Center'
+    - 'help center'
+  suggestion: 'Shopify Help Center'
+
+- violation: 
+    - 'theme store'
+  suggestion: 'Shopify theme store'
+
+- violation:
+    - 'Theme Store'
+  suggestion: 'Shopify theme store'
+
+- violation:
+    - 'dropdown'
+    - 'drop down'
+  case_insensitive: 'true'
+  suggestion: "drop-down"
+
+- violation: 
+    - 'application'
+    - 'applications'
+  case_insensitive: 'true'
+  suggestion: 'app(s)'
+
+- violation: 
+    - 'App'
+    - 'Apps'
+  suggestion: 'app(s)'
+
+
+- violation: 'Lite Shopify Plan'
+  case_insensitive: 'true'
+  suggestion: 'Lite Shopify'
+
+- violation: 'Basic Shopify Plan'
+  case_insensitive: 'true'
+  suggestion: 'Basic Shopify'
+
+- violation: 
+    - 'Professional Shopify Plan'
+    - 'Professional Plan'
+    - 'Pro Shopify Plan'
+    - 'Pro Plan'
+  case_insensitive: 'true'
+  suggestion: 'Shopify'
+
+- violation: 'shopify'
+  suggestion: 'Shopify'
+
+- violation: 
+    - 'Unlimited Shopify Plan'
+    - 'Unlimited Shopify Plan'
+    - 'Unlimited Plan'  
+  case_insensitive: 'true'
+  suggestion: 'Advanced Shopify'
+
+- violation: 'discount number'     
+  suggestion: 'discount code'
+  case_insensitive: 'true'
+
+- violation: 'discount numbers'     
+  suggestion: 'discount codes'
+  case_insensitive: 'true'
+
+- violation: 
+    - 'drop shipping'
+    - 'drop-shipping'
+  case_insensitive: 'true'
+  suggestion: 'dropshipping'
+
+- violation: 
+    - 'e-commerce'
+    - 'E-commerce'
+    - 'Ecommerce'
+  suggestion: 'ecommerce'
+
+- violation:
+    - 'e-mail'
+    - 'email address'
+  case_insensitive: 'true'
+  suggestion: 'email'
+
+- violation:
+    - 'e-mails'
+    - 'email addresses'
+  case_insensitive: 'true'
+  suggestion: 'emails'
+
+- violation: 'Email'
+  suggestion: 'email'
+
+- violation: 'Emails'
+  suggestion: 'emails'
+
+- violation: 
+    - 'Internet'
+    - 'Web'
+    - 'web'
+  suggestion: 'internet'
+
+- violation: 'line item'
+  suggestion: 'item'
+
+- violation: 'line items'
+  suggestion: 'items'
+
+- violation: 
+    - 'Link'
+    - 'hyperlink'
+    - 'hyper-link'
+  suggestion: 'link'
+
+- violation: 
+    - 'Links'
+    - 'hyperlinks'
+    - 'hyper-links'
+  suggestion: 'links'
+
+- violation: 'liquid'
+  suggestion: 'Liquid'
+
+- violation:
+    - 'main theme'
+    - 'current theme'
+    - 'active theme'
+  case_insensitive: 'true'
+  suggestion: 'published theme'
+
+- violation: 
+  - 'Responsive Checkout'
+  - 'Shopify Responsive Checkout'
+  suggestion: 'responsive checkout'
+
+- violation: 
+    - 'POS stores'
+    - 'Retail stores'
+    - 'POS store'
+    - 'Retail store'
+  suggestion: 'retail store(s)' 
+
+- violation: 
+    - 'Shopify Gurus'
+    - 'gurus'
+    - 'Shopify call center'
+    - 'Shopify Help Staff'
+  case_insensitive: 'true'
+  suggestion: 'Shopify Support'
+
+- violation: 'Shopify support'
+  suggestion: 'Shopify Support'
+
+- violation: 'Shopify home'
+  suggestion: 'Shopify Home'
+
+- violation: 
+    - 'Shopify payments'
+    - 'payments'
+  suggestion: 'Shopify Payments'
+
+- violation: 
+    - 'Shopify point of sale'
+    - 'Shopify point-of-sale'
+    - 'Shopify Point-of-Sale'
+  suggestion: 'Shopify POS'
+
+- violation: 
+    - 'Shopify Plus clients'
+    - 'Shopify plus customers'
+  case_insensitive: 'true'
+  suggestion: 'Shopify Plus merchants'
+
+- violation: 
+    - 'Shopify Plus client'
+    - 'Shopify plus customer'
+  case_insensitive: 'true'
+  suggestion: 'Shopify Plus merchant'
+
+- violation: 'Shopify shipping'
+  suggestion: 'Shopify Shipping'
+
+- violation: 'Template'
+  suggestion: 'template'
+
+- violation: 'Templates'
+  suggestion: 'templates'
+
+# - violation: 'Theme'
+#   suggestion: 'theme'
+
+- violation: 
+    - 'third party'
+    - '3rd party'
+  case_insensitive: 'true'
+  suggestion: 'third-party'
+
+- violation: 
+    - 'toolbar'
+    - 'meta nav'
+  case_insensitive: 'true'
+  suggestion: 'top bar'
+
+- violation: 
+    - 'transition'
+    - 'rotation style'
+  case_insensitive: 'true'
+  suggestion: 'transition effect'
+
+- violation: 
+    - 'trash-can button'
+    - 'trash can button'
+    - 'trash can'
+    - 'dustbin icon'
+    - 'dustbin'
+    - 'garbage'
+    - 'garbage button'
+    - 'delete button'
+  case_insensitive: 'true'
+  suggestion: 'trash button'
+
+- violation: 
+    - 'buy button'
+    - 'Buy button'
+  suggestion: 'Buy Button'
+
+- violation: 
+    - 'buy buttons'
+    - 'Buy buttons'
+  suggestion: 'Buy Buttons'
+
+- violation: 'carrier calculated shipping'
+  case_insensitive: 'true'
+  suggestion: 'carrier-calculated shipping'
+
+- violation: 'cart'
+  case_insensitive: 'true'
+  suggestion: 'cart page'
+
+- violation: 
+  - 'Handle'
+  - 'Handles'
+  suggestion: 'handle(s)'
+
+- violation: 
+    - 'Hardware'
+    - 'Shopify Hardware'
+  suggestion: 'hardware'
+
+- violation: 'info'
+  case_insensitive: 'true'
+  suggestion: 'information'
+
+- violation: 
+    - 'customers'
+    - 'clients'
+    - 'shop owners'
+    - 'store-owners'
+    - 'store owners'
+  case_insensitive: 'true'
+  suggestion: 'merchants'
+
+- violation: 
+    - 'same-day delivery'
+    - 'local delivery'
+  case_insensitive: 'true'
+  suggestion: 'on-demand delivery'
+
+- violation: 
+    - 'same-day deliveries'
+    - 'local deliveries'
+  case_insensitive: 'true'
+  suggestion: 'on-demand deliveries'
+
+# - violation: 'On-Demand Delivery'
+#   suggestion: 'on-demand delivery'
+
+# - violation: 'On-Demand Deliveries'
+#   suggestion: 'on-demand deliveries'
+
+- violation: 'online store'
+  suggestion: 'Online Store'
+
+- violation: 'online stores'
+  suggestion: 'Online Stores'
+
+- violation: 'ecommerce store'
+  case_insensitive: 'true'
+  suggestion: 'Online Store'
+
+- violation: 'ecommerce stores'
+  case_insensitive: 'true'
+  suggestion: 'Online Store(s)'
+
+- violation: 
+  - 'Payment Gateways'
+  - 'payment-gateways'
+  - 'Payment Gateway'
+  - 'payment-gateway'
+  suggestion: 'payment gateway(s)'
+
+- violation: 
+    - 'admin'
+    # - "store\'s admin"
+    # - "store\’s admin"
+    - 'backend store admin'
+    - 'back-end store admin'
+  suggestion: 'Shopify admin'
+
+- violation: 'Shopify Admin'
+  suggestion: 'Shopify admin'
+
+- violation: 'Shopify expert'
+  suggestion: 'Shopify Expert'
+
+- violation: 'Shopify experts'
+  suggestion: 'Shopify Experts'
+
+- violation: 'display'
+  case_insensitive: 'true'
+  suggestion: 'show'
+
+- violation: 'side bar'
+  case_insensitive: 'true'
+  suggestion: 'sidebar'
+
+- violation: 'side bars'
+  case_insensitive: 'true'
+  suggestion: 'sidebars'
+
+- violation: 'product with only one variant'
+  case_insensitive: 'true'
+  suggestion: 'single-variant product'
+
+- violation: 
+    - 'social sharing'
+    - 'social'
+  suggestion: 'social media'
+
+- violation: 'social media buttons'
+  suggestion: 'social media icons'
+
+- violation:
+    - 'staffmember'
+    - 'staffmembers'
+    - 'staff'
+  case_insensitive: 'true'  
+  suggestion: 'staff member(s)'
+
+- violation: 
+    - 'shop'
+    - 'shops'
+    - 'storefront'
+    - 'storefronts'
+  case_insensitive: 'true'
+  suggestion: 'store(s)'
+
+# - violation: 'Store'
+#   suggestion: 'store'
+
+# - violation: 'Stores'
+#   suggestion: 'stores'
+
+- violation: 
+    - 'other theme'
+    - 'inactive theme'
+    - 'alternative theme'
+  case_insensitive: 'true'  
+  suggestion: 'unpublished theme'
+
+- violation: 
+    - 'other themes'
+    - 'inactive themes'
+    - 'alternative themes'
+  case_insensitive: 'true'  
+  suggestion: 'unpublished themes'
+
+- violation: 
+    - 'url'
+    - 'web address'
+  suggestion: 'URL'
+
+- violation: 
+    - 'urls'
+    - 'web addresses'
+  suggestion: 'URLs'
+
+# - violation: 'Variant Image'
+#   suggestion: 'variant image'
+
+# - violation: 'Variant Images'
+#   # suggestion: 'variant images'
+   
+- violation: 
+  - 'web page'
+  case_insensitive: 'true'
+  suggestion: 'webpage'
+
+- violation: 
+  - 'web pages'
+  case_insensitive: 'true'
+  suggestion: 'webpages'
+
+- violation: 'web site'
+  case_insensitive: 'true'
+  suggestion: 'website'
+
+- violation: 'web sites'
+  case_insensitive: 'true'
+  suggestion: 'websites'
+
+# - violation:
+#   - 'Wifi'
+#   - 'wifi'
+#   - 'Wi-Fi'
+#   suggestion: 'wi-fi'
+
+# Internal Facing
+
+- violation: 
+    - 'ALT text'
+    - 'alt image text'
+    - 'ALT image text'
+    - 'alternative image text'
+  suggestion: 'alt text'
+
+- violation: 
+    - 'below footer'
+    - 'sub-footer'
+  case_insensitive: 'true'  
+  suggestion: 'bottom bar'
+
+- violation:
+    - 'development shops'
+    - 'dev shops'
+  case_insensitive: 'true'  
+  suggestion: 'development stores'
+
+- violation:
+    - 'development shop'
+    - 'dev shop'
+  case_insensitive: 'true'
+  suggestion: 'development store'
+
+- violation: 'sub-heading'
+  case_insensitive: 'true'  
+  suggestion: 'subheading'
+
+- violation: 'sub-headings'
+  case_insensitive: 'true'  
+  suggestion: 'subheadings'

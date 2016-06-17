@@ -14,136 +14,166 @@ describe ERBLint::Linter::ContentStyleChecker do
 
   subject(:linter_errors) { linter.lint_file(ERBLint::Parser.parse(file)) }
 
-  violation_set_1 = ['dropdown menu', 'drop down menu']
-  suggestion_1 = 'drop-down menu'
-  case_insensitive_1 = 'true'
-  violation_set_2 = ['Help Center', 'help center']
-  suggestion_2 = 'Shopify Help Center'
-  violation_set_3 = ['timeline']
-  suggestion_3 = 'gosh darn timeline'
-  case_insensitive_3 = 'true'
-  violation_set_4 = 'App'
-  suggestion_4 = 'app'
-  violation_set_5 = 'Application'
-  suggestion_5 = 'application'
-
   let(:rule_set) do
-    [
-      {
-        'violation' => violation_set_1,
-        'suggestion' => suggestion_1,
-        'case_insensitive' => case_insensitive_1
-      },
-      {
-        'violation' => violation_set_2,
-        'suggestion' => suggestion_2
-      },
-      {
-        'violation' => violation_set_3,
-        'suggestion' => suggestion_3,
-        'case_insensitive' => case_insensitive_3
-      },
-      {
-        'violation' => violation_set_4,
-        'suggestion' => suggestion_4
-      },
-      {
-        'violation' => violation_set_5,
-        'suggestion' => suggestion_5
-      }
-    ]
+    YAML.load(File.read('config_test.yml')).to_a
   end
 
-  context 'when a rule is case-insensitive and a file has a violation with a different case from the suggestion' do
+  context '1)
+  - rule is case-insensitive
+  - file has violation with different case (`Drop down`)
+  - file has violation with same case (`dropdown`)
+  - file has suggestion (`drop-down`)' do
     let(:file) { <<~FILE }
-      <p>The drop-down menu increases conversion! But the Drop down menu does not.</p>
+      <p>Tune in, turn on, and drop-down out! And check out the Drop down and dropdown menu too.</p>
+
+    FILE
+
+    it 'reports 2 errors' do
+      expect(linter_errors.size).to eq 2
+    end
+
+    it 'reports errors for `Drop down` and `dropdown` and suggests `drop-down`, and ignores `drop-down`' do
+      expect(linter_errors[0][:message]).to include 'Don\'t use `dropdown`'
+      expect(linter_errors[0][:message]).to include 'Do use `drop-down`'
+      expect(linter_errors[1][:message]).to include 'Don\'t use `drop down`'
+      expect(linter_errors[1][:message]).to include 'Do use `drop-down`'
+      end
+  end
+
+  context '2)
+  - suggestion is prefix + violation (`Shopify Help Center`)
+  - file contains suggestion (`Shopify Help Center`)
+  - file contains violation (`Help Center`)' do
+    let(:file) { <<~FILE }
+      <p>Help! I need a Shopify Help Center. Not just any Help Center. Help!</p>
 
     FILE
 
     it 'reports 1 errors' do
       expect(linter_errors.size).to eq 1
     end
+
+      it 'reports error for `Help Center` and suggests `Shopify Help Center`' do
+      expect(linter_errors[0][:message]).to include 'Don\'t use `Help Center`'
+      expect(linter_errors[0][:message]).to include 'Do use `Shopify Help Center`'
+
+      end
   end
 
-  context 'when a violation is contained within a suggestion and a file contains a suggestion' do
+    context '3)
+  - file contains suggestion (`Shopify Help Center`)
+  - file contains violation (`help center`)' do
     let(:file) { <<~FILE }
-      <p>The Shopify Help Center is great.</p>
-
-    FILE
-
-    it 'reports 0 errors' do
-      expect(linter_errors.size).to eq 0
-    end
-  end
-
-  context 'when a violation is contained within a suggestion and a file contains a violation' do
-    let(:file) { <<~FILE }
-      <p>The Help Center is not helpful.</p>
+      <p>Help. I need a Shopify Help Center. Not just any help center. Help.</p>
 
     FILE
 
     it 'reports 1 errors' do
       expect(linter_errors.size).to eq 1
     end
+
+      it 'reports error for `help center` and suggests `Shopify Help Center`' do
+      expect(linter_errors[0][:message]).to include 'Don\'t use `help center`'
+      expect(linter_errors[0][:message]).to include 'Do use `Shopify Help Center`'
+
+      end
   end
 
-  # TODO: when a suggestion is contained in a violation
-
-  # TODO: Plurals
-
-
-  context 'when a rule is case-insensitive, a violation is contained within a suggestion, and a file contains a suggestion' do
+  context '4)
+  - suggestion is prefix + violation (`Shopify theme store`)
+  - file contains violation (`theme store`)
+  - file contains violation ' do
     let(:file) { <<~FILE }
-      <p>The Gosh Darn Timeline is skewed.</p>
+      <p>The theme store called. They are out of themes at the Theme Store.</p>
 
     FILE
 
-    it 'reports 0 errors' do
-      expect(linter_errors.size).to eq 0
+    it 'reports 2 errors' do
+      expect(linter_errors.size).to eq 2
     end
+
+#     # TODO: Collision between "theme" and "theme store", and "Store" and "theme store"
+
+    it 'reports errors for `theme store` and `Theme Store` and suggests `Shopify theme store`' do
+      expect(linter_errors[0][:message]).to include 'Don\'t use `theme store`'
+      expect(linter_errors[0][:message]).to include 'Do use `Shopify theme store`'
+      expect(linter_errors[1][:message]).to include 'Don\'t use `Theme Store`'
+      expect(linter_errors[1][:message]).to include 'Do use `Shopify theme store`'
+      end
   end
 
-  context 'when a rule is case-insensitive, a violation is contained within a suggestion, and a file contains a violation' do
+  context '5)
+  - violation starts with uppercase character (`Apps`)
+  - suggestion starts with lowercase character (`apps`)
+  - file contains violation (`Big Apps`)
+  - file contains two potential false positives (`Apps` starts the string and a sentence within the string)' do
     let(:file) { <<~FILE }
-      <p>The Timeline is skewed.</p>
-
+      <p>Apps, apps, and away. Big Apps and salutations to the Figure IV crew. Did Britney sing apps, I did it again? Apps a daisy.</p>
     FILE
 
     it 'reports 1 errors' do
       expect(linter_errors.size).to eq 1
     end
+
+    it 'reports errors for `Apps` and suggests `app(s)` but ignores the others' do
+      expect(linter_errors[0][:message]).to include 'Don\'t use `Apps`'
+      expect(linter_errors[0][:message]).to include 'Do use `app(s)`'
+      end
   end
 
-  context 'when a violation starts with an uppercase character, a suggestion starts with a lowercase character, and a file contains a violation and a false positive' do
+  context '6)
+  - violation starts with uppercase character (`App`)
+  - suggestion starts with lowercase character (`app`)
+  - another violation contains this violation (`Apps`)
+  - file contains a violation (`Five hundred App`)
+  - file contains three potential false positives 
+    (`App` starts the string and a sentence within the string and `Apply` appears as well)' do
     let(:file) { <<~FILE }
-      <p>Big App. A Shopify app? App is good.</p>
+      <p>App Apply. Five hundred App. App now, time is running out. Apply now.</p>
     FILE
 
     it 'reports 1 errors' do
       expect(linter_errors.size).to eq 1
     end
+
+    it 'reports errors for `App` and suggests `app(s)` but ignores the others' do
+    expect(linter_errors[0][:message]).to include 'Don\'t use `App`'
+    expect(linter_errors[0][:message]).to include 'Do use `app(s)`'
+    end
   end
 
-
-  context 'when a violation starts with an uppercase character, a suggestion starts with a lowercase character, and a file contains a true violation and a false positive' do
+  context '7)
+  - violation has multiple words starting with uppercase characters (`Payment Gateways`)
+  - suggestion contains only lowercase characters (`payment gateways`)' do
     let(:file) { <<~FILE }
-      <p>App. A Shopify app? App is good. But App is bad.</p>
+      <p>Payment Gateways are a gateway drug.</p>
     FILE
 
     it 'reports 1 errors' do
       expect(linter_errors.size).to eq 1
     end
+
+    it 'reports errors for `Payment Gateways` and suggests `payment gateway(s)` but ignores the others' do
+    expect(linter_errors[0][:message]).to include 'Don\'t use `Payment Gateways`'
+    expect(linter_errors[0][:message]).to include 'Do use `payment gateway(s)`'
+    end
   end
 
-  context 'when a violation starts with an uppercase character, a suggestion starts with a lowercase character, a suggestion is contained within a violation, and a file contains a true violation and a false positive' do
+  context '8)
+  - violation has multiple words and first word starts with uppercase character (`Shopify partner`)
+  - suggestion has multiple words, both starting with uppercase characters (`Shopify Partner`)' do
     let(:file) { <<~FILE }
-      <p>Software application is an Application.</p>
+      <p>Are you a Shopify partner, partner?</p>
     FILE
 
     it 'reports 1 errors' do
       expect(linter_errors.size).to eq 1
+    end
+
+    it 'reports errors for `Shopify partner` and suggests `Shopify Partner`' do
+    expect(linter_errors[0][:message]).to include 'Don\'t use `Shopify partner`'
+    expect(linter_errors[0][:message]).to include 'Do use `Shopify Partner(s)`'
     end
   end
 
 end
-
