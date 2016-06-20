@@ -14,7 +14,7 @@ module ERBLint
           suggestion = rule.fetch('suggestion', '')
           case_insensitive = rule.fetch('case_insensitive', '')
           violation = rule.fetch('violation', [])
-          (violation.kind_of?(String) ? [violation] : violation).each do |violating_pattern|
+          (violation.is_a?(String) ? [violation] : violation).each do |violating_pattern|
             @content_ruleset.push(
               violating_pattern: violating_pattern,
               suggestion: suggestion,
@@ -29,15 +29,17 @@ module ERBLint
 
       def lint_file(file_tree)
         errors = []
+        @prior_violations = []
         html_elements = Nokogiri::XML::NodeSet.new(file_tree.document, Parser.filter_erb_nodes(file_tree.search('*')))
         inner_text = html_elements.children.select { |node| node.text? }
-        inner_text = inner_text || []
+        inner_text ||= []
         outer_text = file_tree.children.select { |node| node.text? }
-        outer_text = outer_text || []
+        outer_text ||= []
         all_text = (outer_text + inner_text)
         # Assumes the immediate parent is on the same line for demo purposes, otherwise hardcode line_number
         all_text.each do |text_node|
-          line_number = text_node.parent.line if !text_node.parent.nil?
+          line_number = text_node.parent.line unless text_node.parent.nil?
+          # binding.pry
           errors.push(*generate_errors(text_node.text, line_number))
         end
         errors
@@ -53,6 +55,7 @@ module ERBLint
             line: line_number,
             message: "Don't use `#{violation}`. Do use `#{suggestion}`. #{@addendum}".strip
           }
+          # binding.pry
         end
       end
 
@@ -60,21 +63,21 @@ module ERBLint
         @content_ruleset.select do |content_rule|
           violation = content_rule[:violating_pattern]
           suggestion = content_rule[:suggestion]
-          # binding.pry
-          all_text = all_text.gsub(/#{suggestion}/, '')
-          ignore_starting_caps = /\w #{violation}\b/
-          case_s = /(#{violation})\b/
-          case_i = /(#{violation})\b/i
+          all_text = all_text.gsub(/#{suggestion}/, '') # .gsub(/"/, '') <= Strip out quotation marks from words
           lc_suggestion_uc_violation = suggestion.match(/\p{Lower}/) && !violation.match(/\p{Lower}/)
+          # next if @prior_violations.to_s.match(/#{violation}/)
+          # next if this violation is contained within another one that has occurred earlier
+          # in the list, e.g. "Store's admin" violates "store's admin" and "Store"
           if content_rule[:case_insensitive] == 'true'
-            case_i.match(all_text)
+            /(#{violation})\b/i.match(all_text) # && @prior_violations.push(violation)
           elsif content_rule[:case_insensitive] != 'true' && lc_suggestion_uc_violation
-            ignore_starting_caps.match(all_text)
+            /\w (#{violation})\b/.match(all_text) # && @prior_violations.push(violation)
           else
-            case_s.match(all_text)
+            /(#{violation})\b/.match(all_text) # && @prior_violations.push(violation)
           end
         end
       end
     end
   end
 end
+

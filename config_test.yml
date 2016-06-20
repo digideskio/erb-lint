@@ -37,6 +37,30 @@
     - 'Theme Store'
   suggestion: 'Shopify theme store'
 
+- violation: 'Theme'
+  suggestion: 'theme'
+
+- violation: 'Themes'
+  suggestion: 'themes'
+
+- violation: 
+    - 'store’s admin'
+    - "store\'s admin"
+    - 'admin'
+    - 'backend store admin'
+    - 'back-end store admin'
+  case_insensitive: 'true'
+  suggestion: 'Shopify admin'
+
+- violation: 'Shopify Admin'
+  suggestion: 'Shopify admin'
+
+- violation: 'Store'
+  suggestion: 'store'
+
+- violation: 'Stores'
+  suggestion: 'stores'
+
 - violation: 
     - 'application'
     - 'applications'
@@ -227,9 +251,6 @@
     - 'Templates'
   suggestion: 'templates'
 
-# - violation: 'Theme'
-#   suggestion: 'theme'
-
 - violation: 
     - 'third party'
     - '3rd party'
@@ -295,14 +316,14 @@
   case_insensitive: 'true'
   suggestion: 'information'
 
-# - violation: 
-#     - 'customers'
-#     - 'clients'
-#     - 'shop owners'
-#     - 'store-owners'
-#     - 'store owners'
-#   case_insensitive: 'true'
-#   suggestion: 'merchants'
+- violation: 
+    - 'customers'
+    - 'clients'
+    - 'shop owners'
+    - 'store-owners'
+    - 'store owners'
+  case_insensitive: 'true'
+  suggestion: 'merchants'
 
 - violation: 
     - 'same-day delivery'
@@ -349,17 +370,6 @@
   suggestion: 'payment gateways'
 
 - violation: 
-    - 'admin'
-    - "store\'s admin"
-    - 'backend store admin'
-    - 'back-end store admin'
-  case_insensitive: 'true'
-  suggestion: 'Shopify admin'
-
-- violation: 'Shopify Admin'
-  suggestion: 'Shopify admin'
-
-- violation: 
     - 'Shopify expert'
   suggestion: 'Shopify Expert'
 
@@ -398,7 +408,6 @@
     - 'social media buttons'
   suggestion: 'social media icons'
 
-
 - violation:
     - 'staffmember'
     - 'staffmembers'
@@ -417,12 +426,6 @@
     - 'storefronts'
   case_insensitive: 'true'
   suggestion: 'stores'
-
-# - violation: 'Store'
-#   suggestion: 'store'
-
-# - violation: 'Stores'
-#   suggestion: 'stores'
 
 - violation: 
     - 'other theme'
