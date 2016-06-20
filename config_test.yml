@@ -1,12 +1,17 @@
 ---
 
-# TODO: Merge plurals to (s) form in suggestion
-# TODO: sort out the edge cases that I've commented out, mostly ones that have more than one capital letter
+# TODO: Make sure hyphens are considered part of words
+# TODO: Test for ends of words and starts of words
+# TODO: Test for apostrophe usage
+
 
 - violation: 
     - 'Shopify partner'
+  suggestion: 'Shopify Partner'
+
+- violation: 
     - 'Shopify partners'
-  suggestion: 'Shopify Partner(s)'
+  suggestion: 'Shopify Partners'
 
 - violation:
     - 'manual'
@@ -22,11 +27,8 @@
     - 'help center'
   suggestion: 'Shopify Help Center'
 
-- violation: 
-    - 'theme store'
-  suggestion: 'Shopify theme store'
-
 - violation:
+    - 'theme store'
     - 'Theme Store'
   suggestion: 'Shopify theme store'
 
@@ -40,13 +42,28 @@
     - 'application'
     - 'applications'
   case_insensitive: 'true'
-  suggestion: 'app(s)'
+  suggestion: 'app'
+
+- violation: 
+    - 'applications'
+case_insensitive: 'true'
+suggestion: 'apps'
 
 - violation: 
     - 'App'
-    - 'Apps'
-  suggestion: 'app(s)'
+  suggestion: 'app'
 
+- violation: 
+    - 'Apps'
+  suggestion: 'apps'
+
+# - violation:
+#     - '-\$'
+#   suggestion: '(minus signs before dollar amounts)'
+
+# - violation:
+#     - '\d-\d'
+#   suggestion: '(en dashes in date ranges)'
 
 - violation: 'Lite Shopify Plan'
   case_insensitive: 'true'
@@ -118,17 +135,19 @@
     - 'web'
   suggestion: 'internet'
 
-- violation: 'line item'
+- violation: 
+    - 'line item'
   suggestion: 'item'
 
-- violation: 'line items'
+- violation:
+    - 'line items'
   suggestion: 'items'
 
 - violation: 
     - 'Link'
     - 'hyperlink'
     - 'hyper-link'
-  suggestion: 'link'
+  suggestion: 'links'
 
 - violation: 
     - 'Links'
@@ -147,16 +166,19 @@
   suggestion: 'published theme'
 
 - violation: 
-  - 'Responsive Checkout'
-  - 'Shopify Responsive Checkout'
+    - 'Responsive Checkout'
+    - 'Shopify Responsive Checkout'
   suggestion: 'responsive checkout'
+
+- violation: 
+    - 'POS store'
+    - 'Retail store'
+  suggestion: 'retail store'
 
 - violation: 
     - 'POS stores'
     - 'Retail stores'
-    - 'POS store'
-    - 'Retail store'
-  suggestion: 'retail store(s)' 
+  suggestion: 'retail stores'
 
 - violation: 
     - 'Shopify Gurus'
@@ -184,24 +206,26 @@
   suggestion: 'Shopify POS'
 
 - violation: 
-    - 'Shopify Plus clients'
-    - 'Shopify plus customers'
-  case_insensitive: 'true'
-  suggestion: 'Shopify Plus merchants'
-
-- violation: 
     - 'Shopify Plus client'
     - 'Shopify plus customer'
   case_insensitive: 'true'
   suggestion: 'Shopify Plus merchant'
 
+- violation: 
+  - 'Shopify Plus clients'
+  - 'Shopify plus customers'
+case_insensitive: 'true'
+suggestion: 'Shopify Plus merchants'   
+
 - violation: 'Shopify shipping'
   suggestion: 'Shopify Shipping'
 
-- violation: 'Template'
+- violation: 
+    - 'Template'
   suggestion: 'template'
 
-- violation: 'Templates'
+- violation: 
+    - 'Templates'
   suggestion: 'templates'
 
 # - violation: 'Theme'
@@ -256,9 +280,12 @@
   suggestion: 'cart page'
 
 - violation: 
-  - 'Handle'
-  - 'Handles'
-  suggestion: 'handle(s)'
+    - 'Handle'
+  suggestion: 'handle'
+
+- violation: 
+    - 'Handles'
+  suggestion: 'handles'
 
 - violation: 
     - 'Hardware'
@@ -269,14 +296,14 @@
   case_insensitive: 'true'
   suggestion: 'information'
 
-- violation: 
-    - 'customers'
-    - 'clients'
-    - 'shop owners'
-    - 'store-owners'
-    - 'store owners'
-  case_insensitive: 'true'
-  suggestion: 'merchants'
+# - violation: 
+#     - 'customers'
+#     - 'clients'
+#     - 'shop owners'
+#     - 'store-owners'
+#     - 'store owners'
+#   case_insensitive: 'true'
+#   suggestion: 'merchants'
 
 - violation: 
     - 'same-day delivery'
@@ -296,10 +323,12 @@
 # - violation: 'On-Demand Deliveries'
 #   suggestion: 'on-demand deliveries'
 
-- violation: 'online store'
+- violation: 
+    - 'online store'
   suggestion: 'Online Store'
 
-- violation: 'online stores'
+- violation: 
+    - 'online stores'
   suggestion: 'Online Stores'
 
 - violation: 'ecommerce store'
@@ -308,19 +337,21 @@
 
 - violation: 'ecommerce stores'
   case_insensitive: 'true'
-  suggestion: 'Online Store(s)'
+  suggestion: 'Online Stores'
 
 - violation: 
-  - 'Payment Gateways'
-  - 'payment-gateways'
-  - 'Payment Gateway'
-  - 'payment-gateway'
-  suggestion: 'payment gateway(s)'
+    - 'Payment Gateway'
+    - 'payment-gateway'
+  suggestion: 'payment gateway'
+
+- violation: 
+    - 'Payment Gateways'
+    - 'payment-gateways'
+  suggestion: 'payment gateways'
 
 - violation: 
     - 'admin'
-    # - "store\'s admin"
-    # - "store\’s admin"
+    - "store\'s admin"
     - 'backend store admin'
     - 'back-end store admin'
   suggestion: 'Shopify admin'
@@ -328,23 +359,23 @@
 - violation: 'Shopify Admin'
   suggestion: 'Shopify admin'
 
-- violation: 'Shopify expert'
+- violation: 
+    - 'Shopify expert'
   suggestion: 'Shopify Expert'
 
-- violation: 'Shopify experts'
+- violation: 
+    - 'Shopify experts'
   suggestion: 'Shopify Experts'
 
 - violation: 'display'
   case_insensitive: 'true'
   suggestion: 'show'
 
-- violation: 'side bar'
+- violation: 
+    - 'side bar'
+    - 'side bars'
   case_insensitive: 'true'
-  suggestion: 'sidebar'
-
-- violation: 'side bars'
-  case_insensitive: 'true'
-  suggestion: 'sidebars'
+  suggestion: 'sidebar(s)'
 
 - violation: 'product with only one variant'
   case_insensitive: 'true'
@@ -355,8 +386,14 @@
     - 'social'
   suggestion: 'social media'
 
-- violation: 'social media buttons'
+- violation: 
+    - 'social media button'
+  suggestion: 'social media icon'
+
+- violation: 
+    - 'social media buttons'
   suggestion: 'social media icons'
+
 
 - violation:
     - 'staffmember'
@@ -367,11 +404,15 @@
 
 - violation: 
     - 'shop'
-    - 'shops'
     - 'storefront'
+  case_insensitive: 'true'
+  suggestion: 'store'
+
+- violation: 
+    - 'shops'
     - 'storefronts'
   case_insensitive: 'true'
-  suggestion: 'store(s)'
+  suggestion: 'stores'
 
 # - violation: 'Store'
 #   suggestion: 'store'
@@ -393,6 +434,7 @@
   case_insensitive: 'true'  
   suggestion: 'unpublished themes'
 
+
 - violation: 
     - 'url'
     - 'web address'
@@ -403,35 +445,39 @@
     - 'web addresses'
   suggestion: 'URLs'
 
-# - violation: 'Variant Image'
-#   suggestion: 'variant image'
+- violation: 
+    - 'Variant Image'
+  suggestion: 'variant image'
 
-# - violation: 'Variant Images'
-#   # suggestion: 'variant images'
+- violation: 
+    - 'Variant Images'
+  suggestion: 'variant images'
    
 - violation: 
-  - 'web page'
+    - 'web page'
   case_insensitive: 'true'
   suggestion: 'webpage'
 
 - violation: 
-  - 'web pages'
+    - 'web pages'
   case_insensitive: 'true'
   suggestion: 'webpages'
 
-- violation: 'web site'
+- violation: 
+    - 'web site'
   case_insensitive: 'true'
   suggestion: 'website'
 
-- violation: 'web sites'
+- violation: 
+    - 'web sites'
   case_insensitive: 'true'
   suggestion: 'websites'
 
-# - violation:
-#   - 'Wifi'
-#   - 'wifi'
-#   - 'Wi-Fi'
-#   suggestion: 'wi-fi'
+- violation:
+    - 'Wifi'
+    - 'wifi'
+    - 'Wi-Fi'
+  suggestion: 'wi-fi'
 
 # Internal Facing
 
@@ -449,21 +495,23 @@
   suggestion: 'bottom bar'
 
 - violation:
+    - 'development shop'
+    - 'dev shop'
+  case_insensitive: 'true'  
+  suggestion: 'development store'
+
+- violation:
     - 'development shops'
     - 'dev shops'
   case_insensitive: 'true'  
   suggestion: 'development stores'
 
-- violation:
-    - 'development shop'
-    - 'dev shop'
-  case_insensitive: 'true'
-  suggestion: 'development store'
-
-- violation: 'sub-heading'
+- violation: 
+    - 'sub-heading'
   case_insensitive: 'true'  
   suggestion: 'subheading'
 
-- violation: 'sub-headings'
+- violation: 
+    - 'sub-headings'
   case_insensitive: 'true'  
   suggestion: 'subheadings'
