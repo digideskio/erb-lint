@@ -42,15 +42,20 @@ module ERBLint
           # binding.pry
           errors.push(*generate_errors(text_node.text, line_number))
         end
+          # binding.pry
         errors
       end
 
       private
 
       def generate_errors(all_text, line_number)
+
+        # Map matches to violations first??
+
         violated_rules(all_text).map do |violated_rule|
           violation = violated_rule[:violating_pattern]
           suggestion = violated_rule[:suggestion]
+
           {
             line: line_number,
             message: "Don't use `#{violation}`. Do use `#{suggestion}`. #{@addendum}".strip
@@ -65,15 +70,15 @@ module ERBLint
           suggestion = content_rule[:suggestion]
           all_text = all_text.gsub(/#{suggestion}/, '') # .gsub(/"/, '') <= Strip out quotation marks from words
           lc_suggestion_uc_violation = suggestion.match(/\p{Lower}/) && !violation.match(/\p{Lower}/)
-          # next if @prior_violations.to_s.match(/#{violation}/)
+          next if @prior_violations.to_s.match(/#{violation}/)
           # next if this violation is contained within another one that has occurred earlier
           # in the list, e.g. "Store's admin" violates "store's admin" and "Store"
           if content_rule[:case_insensitive] == 'true'
-            /(#{violation})\b/i.match(all_text) # && @prior_violations.push(violation)
+            /(#{violation})\b/i.match(all_text) && @prior_violations.push(/(#{violation})\b/i.match(all_text).captures)
           elsif content_rule[:case_insensitive] != 'true' && lc_suggestion_uc_violation
-            /\w (#{violation})\b/.match(all_text) # && @prior_violations.push(violation)
+            /\w (#{violation})\b/.match(all_text) && @prior_violations.push(/\w (#{violation})\b/.match(all_text).captures)
           else
-            /(#{violation})\b/.match(all_text) # && @prior_violations.push(violation)
+            /(#{violation})\b/.match(all_text) && @prior_violations.push(/(#{violation})\b/.match(all_text).captures)
           end
         end
       end
