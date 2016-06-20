@@ -29,13 +29,12 @@ module ERBLint
 
       def lint_file(file_tree)
         errors = []
-        html_elements = Nokogiri::XML::NodeSet.new(file_tree.document, Parser.filter_erb_nodes(file_tree))
+        html_elements = Nokogiri::XML::NodeSet.new(file_tree.document, Parser.filter_erb_nodes(file_tree.search('*')))
         inner_text = html_elements.children.select { |node| node.text? }
         inner_text = inner_text || []
         outer_text = file_tree.children.select { |node| node.text? }
         outer_text = outer_text || []
         all_text = (outer_text + inner_text)
-
         # Assumes the immediate parent is on the same line for demo purposes, otherwise hardcode line_number
         all_text.each do |text_node|
           line_number = text_node.parent.line if !text_node.parent.nil?
@@ -61,12 +60,12 @@ module ERBLint
         @content_ruleset.select do |content_rule|
           violation = content_rule[:violating_pattern]
           suggestion = content_rule[:suggestion]
+          # binding.pry
           all_text = all_text.gsub(/#{suggestion}/, '')
           ignore_starting_caps = /\w #{violation}\b/
           case_s = /(#{violation})\b/
           case_i = /(#{violation})\b/i
           lc_suggestion_uc_violation = suggestion.match(/\p{Lower}/) && !violation.match(/\p{Lower}/)
-          # binding.pry
           if content_rule[:case_insensitive] == 'true'
             case_i.match(all_text)
           elsif content_rule[:case_insensitive] != 'true' && lc_suggestion_uc_violation

@@ -4,6 +4,11 @@
 # TODO: Test for ends of words and starts of words
 # TODO: Test for apostrophe usage
 
+- violation:
+    - 'dropdown'
+    - 'drop down'
+  case_insensitive: 'true'
+  suggestion: "drop-down"
 
 - violation: 
     - 'Shopify partner'
@@ -32,12 +37,6 @@
     - 'Theme Store'
   suggestion: 'Shopify theme store'
 
-- violation:
-    - 'dropdown'
-    - 'drop down'
-  case_insensitive: 'true'
-  suggestion: "drop-down"
-
 - violation: 
     - 'application'
     - 'applications'
@@ -46,8 +45,8 @@
 
 - violation: 
     - 'applications'
-case_insensitive: 'true'
-suggestion: 'apps'
+  case_insensitive: 'true'
+  suggestion: 'apps'
 
 - violation: 
     - 'App'
@@ -212,10 +211,10 @@ suggestion: 'apps'
   suggestion: 'Shopify Plus merchant'
 
 - violation: 
-  - 'Shopify Plus clients'
-  - 'Shopify plus customers'
-case_insensitive: 'true'
-suggestion: 'Shopify Plus merchants'   
+    - 'Shopify Plus clients'
+    - 'Shopify plus customers'
+  case_insensitive: 'true'
+  suggestion: 'Shopify Plus merchants'   
 
 - violation: 'Shopify shipping'
   suggestion: 'Shopify Shipping'
@@ -317,11 +316,11 @@ suggestion: 'Shopify Plus merchants'
   case_insensitive: 'true'
   suggestion: 'on-demand deliveries'
 
-# - violation: 'On-Demand Delivery'
-#   suggestion: 'on-demand delivery'
+- violation: 'On-Demand Delivery'
+  suggestion: 'on-demand delivery'
 
-# - violation: 'On-Demand Deliveries'
-#   suggestion: 'on-demand deliveries'
+- violation: 'On-Demand Deliveries'
+  suggestion: 'on-demand deliveries'
 
 - violation: 
     - 'online store'
@@ -354,6 +353,7 @@ suggestion: 'Shopify Plus merchants'
     - "store\'s admin"
     - 'backend store admin'
     - 'back-end store admin'
+  case_insensitive: 'true'
   suggestion: 'Shopify admin'
 
 - violation: 'Shopify Admin'
@@ -372,10 +372,14 @@ suggestion: 'Shopify Plus merchants'
   suggestion: 'show'
 
 - violation: 
-    - 'side bar'
     - 'side bars'
   case_insensitive: 'true'
-  suggestion: 'sidebar(s)'
+  suggestion: 'sidebars'
+
+- violation: 
+    - 'side bar'
+  case_insensitive: 'true'
+  suggestion: 'sidebars'
 
 - violation: 'product with only one variant'
   case_insensitive: 'true'

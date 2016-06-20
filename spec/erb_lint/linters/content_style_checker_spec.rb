@@ -115,9 +115,9 @@ describe ERBLint::Linter::ContentStyleChecker do
       expect(linter_errors.size).to eq 1
     end
 
-    it 'reports errors for `Apps` and suggests `app(s)` but ignores the others' do
+    it 'reports errors for `Apps` and suggests `apps` but ignores the others' do
       expect(linter_errors[0][:message]).to include 'Don\'t use `Apps`'
-      expect(linter_errors[0][:message]).to include 'Do use `app(s)`'
+      expect(linter_errors[0][:message]).to include 'Do use `apps`'
       end
   end
 
@@ -136,9 +136,9 @@ describe ERBLint::Linter::ContentStyleChecker do
       expect(linter_errors.size).to eq 1
     end
 
-    it 'reports errors for `App` and suggests `app(s)` but ignores the others' do
+    it 'reports errors for `App` and suggests `app` but ignores the others' do
     expect(linter_errors[0][:message]).to include 'Don\'t use `App`'
-    expect(linter_errors[0][:message]).to include 'Do use `app(s)`'
+    expect(linter_errors[0][:message]).to include 'Do use `app`'
     end
   end
 
@@ -153,9 +153,9 @@ describe ERBLint::Linter::ContentStyleChecker do
       expect(linter_errors.size).to eq 1
     end
 
-    it 'reports errors for `Payment Gateways` and suggests `payment gateway(s)` but ignores the others' do
+    it 'reports errors for `Payment Gateways` and suggests `payment gateways` but ignores the others' do
     expect(linter_errors[0][:message]).to include 'Don\'t use `Payment Gateways`'
-    expect(linter_errors[0][:message]).to include 'Do use `payment gateway(s)`'
+    expect(linter_errors[0][:message]).to include 'Do use `payment gateways`'
     end
   end
 
@@ -172,8 +172,25 @@ describe ERBLint::Linter::ContentStyleChecker do
 
     it 'reports errors for `Shopify partner` and suggests `Shopify Partner`' do
     expect(linter_errors[0][:message]).to include 'Don\'t use `Shopify partner`'
-    expect(linter_errors[0][:message]).to include 'Do use `Shopify Partner(s)`'
+    expect(linter_errors[0][:message]).to include 'Do use `Shopify Partner`'
     end
   end
+
+  context '9)
+  - violation has a single quote (`Store\'s admin`)' do
+    let(:file) { <<~FILE }
+      <p>Does the Store\'s admin add Finn?</p>
+    FILE
+
+    it 'reports 1 errors' do
+      expect(linter_errors.size).to eq 1
+    end
+
+    it 'reports errors for `Store\'s admin` and suggests `Shopify admin`' do
+    expect(linter_errors[0][:message]).to include 'Don\'t use `Store\'s admin`'
+    expect(linter_errors[0][:message]).to include 'Do use `Shopify admin`'
+    end
+  end
+
 
 end
