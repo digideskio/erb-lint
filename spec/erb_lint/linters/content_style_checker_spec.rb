@@ -20,7 +20,7 @@ describe ERBLint::Linter::ContentStyleChecker do
   - violation:
       - 'dropdown'
       - 'drop down'
-    case_insensitive: 'true'
+    case_insensitive: true
     suggestion: "drop-down"
 
   - violation:
@@ -37,7 +37,7 @@ describe ERBLint::Linter::ContentStyleChecker do
       - 'docs'
       - 'documentation'
       - 'support docs'
-    case_insensitive: 'true'
+    case_insensitive: true
     suggestion: 'Shopify Help Center'
 
   - violation:
@@ -62,7 +62,7 @@ describe ERBLint::Linter::ContentStyleChecker do
       - 'backend store admin'
       - 'back-end store admin'
       - 'admin'
-    case_insensitive: 'true'
+    case_insensitive: true
     suggestion: 'Shopify admin'
 
   - violation: 'Shopify Admin'
@@ -77,12 +77,12 @@ describe ERBLint::Linter::ContentStyleChecker do
   - violation:
       - 'application'
       - 'applications'
-    case_insensitive: 'true'
+    case_insensitive: true
     suggestion: 'app'
 
   - violation:
       - 'applications'
-    case_insensitive: 'true'
+    case_insensitive: true
     suggestion: 'apps'
 
   - violation:

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'pry'
+
 module ERBLint
   class Linter
     # Checks for content style guide violations in the text nodes of HTML files.
@@ -23,11 +25,11 @@ module ERBLint
         @content_ruleset.freeze
 
         @addendum = config.fetch('addendum', '')
-        @prior_violations = []
       end
 
       def lint_file(file_tree)
         errors = []
+        @prior_violations = []
         inner_text = select_text_children(html_elements(file_tree))
         inner_text ||= []
         outer_text = select_text_children(file_tree)
@@ -73,9 +75,11 @@ module ERBLint
           suggestion = content_rule[:suggestion]
           all_text = all_text.gsub(/#{suggestion}/, '')
           next if @prior_violations.to_s.match(/#{violation}/)
-          if content_rule[:case_insensitive] == 'true'
+          # next if this violation is contained within another one that has occurred earlier
+          # in the list, e.g. "Store's admin" violates "store's admin" and "Store"
+          if content_rule[:case_insensitive] == true
             case_insensitive_match(violation, all_text)
-          elsif content_rule[:case_insensitive] != 'true' && lc_uc(suggestion, violation)
+          elsif content_rule[:case_insensitive] == false && lc_uc(suggestion, violation)
             ignore_starting_caps_match(violation, all_text)
           else
             case_sensitive_match(violation, all_text)
