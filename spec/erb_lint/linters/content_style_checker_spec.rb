@@ -182,7 +182,7 @@ describe ERBLint::Linter::ContentStyleChecker do
 
     context '- suggestion is prefix + violation (`Shopify theme store`)
     - file contains violation (`theme store`)
-    - file contains violation (`Theme store`) 
+    - file contains violation (`Theme store`)
     - violation contained in prior violation (`Theme`)' do
       let(:file) { <<~FILE }
         <p>The theme store called. They are out of themes at the Theme Store.</p>
