@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
+require 'YAML'
 
 describe ERBLint::Linter::ContentStyleChecker do
   let(:linter_config) do

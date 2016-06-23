@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'pry'
-
 module ERBLint
   class Linter
     # Checks for content style guide violations in the text nodes of HTML files.
