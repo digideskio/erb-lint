@@ -1,9 +1,5 @@
 ---
 
-# TODO: Make sure hyphens are considered part of words
-# TODO: Test for ends of words and starts of words
-# TODO: Test for apostrophe usage
-
 - violation:
     - 'dropdown'
     - 'drop down'
@@ -46,9 +42,9 @@
 - violation: 
     - 'store’s admin'
     - "store\'s admin"
-    - 'admin'
     - 'backend store admin'
     - 'back-end store admin'
+    - 'admin'
   case_insensitive: 'true'
   suggestion: 'Shopify admin'
 

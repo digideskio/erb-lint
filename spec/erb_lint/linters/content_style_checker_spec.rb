@@ -176,7 +176,7 @@ describe ERBLint::Linter::ContentStyleChecker do
   # context '9)
   # - violation has a single dumb quote (`Store\'s admin`)' do
   #   let(:file) { <<~FILE }
-  #     <p>Does the Store's admin add Finn?</p>
+  #     <p>Does the Store\'s admin add Finn?</p>
   #   FILE
 
   #   it 'reports 2 errors' do
@@ -202,28 +202,29 @@ describe ERBLint::Linter::ContentStyleChecker do
       expect(linter_errors.size).to eq 1
     end
 
-    # TODO: I need to actually capture the real violation and push that instead of the violated rule.
+    # TODO: I need to actually capture the real violation and push that instead of the violated rule.??
 
-    it 'reports errors for `store’s admin`, `admin`, and `Store` and suggests `Shopify admin` and `store`' do
+    it 'reports errors for `store’s admin` and suggests `Shopify admin`' do
       expect(linter_errors[0][:message]).to include 'Don\'t use `store’s admin`'
       expect(linter_errors[0][:message]).to include 'Do use `Shopify admin`'
     end
   end
 
+    context '11)
+- text has two double quotes (`"backend store admin"`)' do
+    let(:file) { <<~FILE }
+      <p>Does the "backend store admin" add Finn?</p>
+    FILE
 
-#     context '11)
-# - text has two double quotes (`"backend store admin"`)' do
-#     let(:file) { <<~FILE }
-#       <p>Does the "backend store admin" add Finn?</p>
-#     FILE
+    it 'reports 1 errors' do
+      expect(linter_errors.size).to eq 1
+    end
 
-#     it 'reports 1 errors' do
-#       expect(linter_errors.size).to eq 1
-#     end
+    # TODO: I also need to make it scan the entire rule worth of violations so it doesn't have to go in order.
 
-#     it 'reports errors for `backend store admin` and suggests `Shopify admin`' do
-#     expect(linter_errors[0][:message]).to include 'Don\'t use `backend store admin`'
-#     expect(linter_errors[0][:message]).to include 'Do use `Shopify admin`'
-#     end
-#   end
+    it 'reports errors for `backend store admin` and suggests `Shopify admin`' do
+    expect(linter_errors[0][:message]).to include 'Don\'t use `backend store admin`'
+    expect(linter_errors[0][:message]).to include 'Do use `Shopify admin`'
+    end
+  end
 end
