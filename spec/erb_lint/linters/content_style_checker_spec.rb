@@ -173,23 +173,21 @@ describe ERBLint::Linter::ContentStyleChecker do
     end
   end
 
-  # context '9)
-  # - violation has a single dumb quote (`Store\'s admin`)' do
-  #   let(:file) { <<~FILE }
-  #     <p>Does the Store\'s admin add Finn?</p>
-  #   FILE
+  context '9)
+  - violation has a single dumb quote (`Store\'s admin`)' do
+    let(:file) { <<~FILE }
+      <p>Does the Store's admin add Finn?</p>
+    FILE
 
-  #   it 'reports 2 errors' do
-  #     expect(linter_errors.size).to eq 2
-  #   end
+    it 'reports 1 error' do
+      expect(linter_errors.size).to eq 1
+    end
 
-  #   it 'reports errors for `store\'s admin` and `admin` and suggests `Shopify admin`' do
-  #     expect(linter_errors[0][:message]).to include 'Don\'t use `store\'s admin`'
-  #     expect(linter_errors[0][:message]).to include 'Do use `Shopify admin`'
-  #     expect(linter_errors[0][:message]).to include 'Don\'t use `admin`'
-  #     expect(linter_errors[0][:message]).to include 'Do use `Shopify admin`'
-  #   end
-  # end
+    it 'reports errors for `store\'s admin` and suggests `Shopify admin`' do
+      expect(linter_errors[0][:message]).to include 'Don\'t use `store\'s admin`'
+      expect(linter_errors[0][:message]).to include 'Do use `Shopify admin`'
+    end
+  end
 
   context '10)
   - violation has a single smart quote (`Store’s admin`)

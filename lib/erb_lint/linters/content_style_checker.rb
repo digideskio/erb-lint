@@ -30,7 +30,7 @@ module ERBLint
       def lint_file(file_tree)
         errors = []
         @prior_violations = []
-        html_elements = Nokogiri::XML::NodeSet.new(file_tree.document, Parser.filter_erb_nodes(file_tree.search('*')))
+        html_elements = Nokogiri::XML::NodeSet.new(file_tree.document, file_tree.search('*'))
         inner_text = html_elements.children.select { |node| node.text? }
         inner_text ||= []
         outer_text = file_tree.children.select { |node| node.text? }
