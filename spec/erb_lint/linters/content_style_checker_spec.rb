@@ -28,9 +28,9 @@ describe ERBLint::Linter::ContentStyleChecker do
 
   context 'when the rule set contains violations' do
     context '- rule is case-insensitive
-    - file has violation with different case (`Drop down`)
-    - file has violation with same case (`dropdown`)
-    - file has suggestion (`drop-down`)' do
+    - file contains violation with different case from suggestion (`Drop down`)
+    - file contains violation with same case as suggestion (`dropdown`)
+    - file contains suggestion (`drop-down`)' do
       violation_set_1 = ['dropdown', 'drop down']
       suggestion_1 = 'drop-down'
       case_insensitive_1 = true
@@ -54,7 +54,7 @@ describe ERBLint::Linter::ContentStyleChecker do
         expect(linter_errors.size).to eq 2
       end
 
-      it 'reports errors for `Drop down` and `dropdown` and suggests `drop-down`, and ignores `drop-down`' do
+      it 'reports errors for `Drop down` and `dropdown` and suggests `drop-down`' do
         expect(linter_errors[0][:message]).to include 'Don\'t use `dropdown`'
         expect(linter_errors[0][:message]).to include 'Do use `drop-down`'
         expect(linter_errors[1][:message]).to include 'Don\'t use `drop down`'
@@ -65,20 +65,14 @@ describe ERBLint::Linter::ContentStyleChecker do
     context '- suggestion is prefix + violation (`Lintercorp Help Center`)
     - file contains suggestion (`Lintercorp Help Center`)
     - file contains violation (`Help Center`)' do
-      violation_set_1 = ['manual', 'Lintercorp manual', 'docs', 'documentation', 'support docs']
+      violation_set_1 = ['Help Center', 'help center']
       suggestion_1 = 'Lintercorp Help Center'
-      violation_set_2 = ['Help Center', 'help center']
-      suggestion_2 = 'Lintercorp Help Center'
 
       let(:rule_set) do
         [
           {
             'violation' => violation_set_1,
             'suggestion' => suggestion_1
-          },
-          {
-            'violation' => violation_set_2,
-            'suggestion' => suggestion_2
           }
         ]
       end
@@ -98,45 +92,12 @@ describe ERBLint::Linter::ContentStyleChecker do
       end
     end
 
-    context '- file contains suggestion (`Lintercorp Help Center`)
-    - file contains violation (`help center`)' do
-      violation_set_1 = ['manual', 'Lintercorp manual', 'docs', 'documentation', 'support docs']
-      suggestion_1 = 'Lintercorp Help Center'
-      violation_set_2 = ['Help Center', 'help center']
-      suggestion_2 = 'Lintercorp Help Center'
-
-      let(:rule_set) do
-        [
-          {
-            'violation' => violation_set_1,
-            'suggestion' => suggestion_1
-          },
-          {
-            'violation' => violation_set_2,
-            'suggestion' => suggestion_2
-          }
-        ]
-      end
-
-      let(:file) { <<~FILE }
-        <p>Help. I need a Lintercorp Help Center. Not just any help center. Help.</p>
-
-      FILE
-
-      it 'reports 1 errors' do
-        expect(linter_errors.size).to eq 1
-      end
-
-      it 'reports error for `help center` and suggests `Lintercorp Help Center`' do
-        expect(linter_errors[0][:message]).to include 'Don\'t use `help center`'
-        expect(linter_errors[0][:message]).to include 'Do use `Lintercorp Help Center`'
-      end
-    end
-
     context '- suggestion is prefix + violation (`Lintercorp theme store`)
     - file contains violation (`theme store`)
-    - file contains violation (`Theme store`)
-    - violation contained in prior violation (`Theme`)' do
+    - file contains violation (`Theme Store`)
+    - violation contains other violations (`Theme Store` contains `Theme` and `Store`)' do
+      # Note that this test will fail if the violations contained within another
+      # violation appear earlier in the rule list than the containing violation.
       violation_set_1 = ['theme store', 'Theme Store']
       suggestion_1 = 'Lintercorp theme store'
       violation_set_2 = 'Theme'
@@ -145,8 +106,6 @@ describe ERBLint::Linter::ContentStyleChecker do
       suggestion_3 = 'themes'
       violation_set_4 = 'Store'
       suggestion_4 = 'store'
-      violation_set_5 = 'Stores'
-      suggestion_5 = 'stores'
 
       let(:rule_set) do
         [
@@ -165,10 +124,6 @@ describe ERBLint::Linter::ContentStyleChecker do
           {
             'violation' => violation_set_4,
             'suggestion' => suggestion_4
-          },
-          {
-            'violation' => violation_set_5,
-            'suggestion' => suggestion_5
           }
         ]
       end
@@ -192,21 +147,15 @@ describe ERBLint::Linter::ContentStyleChecker do
     context '- violation starts with uppercase character (`Apps`)
     - suggestion starts with lowercase character (`apps`)
     - file contains violation (`Big Apps`)
-    - file contains two potential false positives (`Apps` starts the string and a sentence within the string)' do
-      violation_set_1 = 'App'
-      suggestion_1 = 'app'
-      violation_set_2 = 'Apps'
-      suggestion_2 = 'apps'
+    - file contains two potential false positives (the string and a sentence within the string both start with `Apps`)' do
+      violation_set_1 = 'Apps'
+      suggestion_1 = 'apps'
 
       let(:rule_set) do
         [
           {
             'violation' => violation_set_1,
             'suggestion' => suggestion_1
-          },
-          {
-            'violation' => violation_set_2,
-            'suggestion' => suggestion_2
           }
         ]
       end
@@ -218,7 +167,7 @@ describe ERBLint::Linter::ContentStyleChecker do
         expect(linter_errors.size).to eq 1
       end
 
-      it 'reports errors for `Apps` and suggests `apps` but ignores the others' do
+      it 'reports errors for `Apps` and suggests `apps`' do
         expect(linter_errors[0][:message]).to include 'Don\'t use `Apps`'
         expect(linter_errors[0][:message]).to include 'Do use `apps`'
       end
@@ -226,10 +175,10 @@ describe ERBLint::Linter::ContentStyleChecker do
 
     context '- violation starts with uppercase character (`App`)
     - suggestion starts with lowercase character (`app`)
-    - another violation contains this violation (`Apps`)
+    - violation (`App`) contained in another violation (`Apps`)
     - file contains a violation (`Five hundred App`)
-    - file contains three potential false positives
-      (`App` starts the string and a sentence within the string and `Apply` appears as well)' do
+    - file contains two potential false positives
+      (the string and a sentence within the string both start with `App`)' do
       violation_set_1 = 'App'
       suggestion_1 = 'app'
       violation_set_2 = 'Apps'
@@ -248,14 +197,14 @@ describe ERBLint::Linter::ContentStyleChecker do
         ]
       end
       let(:file) { <<~FILE }
-        <p>App Apply. Five hundred App. App now, time is running out. Apply now.</p>
+        <p>App Apply. Five hundred App. App now, time is running out.</p>
       FILE
 
       it 'reports 1 errors' do
         expect(linter_errors.size).to eq 1
       end
 
-      it 'reports errors for `App` and suggests `app` but ignores the others' do
+      it 'reports errors for `App` and suggests `app`' do
         expect(linter_errors[0][:message]).to include 'Don\'t use `App`'
         expect(linter_errors[0][:message]).to include 'Do use `app`'
       end
@@ -263,20 +212,14 @@ describe ERBLint::Linter::ContentStyleChecker do
 
     context '- violation has multiple words starting with uppercase characters (`Payment Gateways`)
     - suggestion contains only lowercase characters (`payment gateways`)' do
-      violation_set_1 = 'Payment Gateway'
-      suggestion_1 = 'payment gateway'
-      violation_set_2 = 'Payment Gateways'
-      suggestion_2 = 'payment gateways'
+      violation_set_1 = 'Payment Gateways'
+      suggestion_1 = 'payment gateways'
 
       let(:rule_set) do
         [
           {
             'violation' => violation_set_1,
             'suggestion' => suggestion_1
-          },
-          {
-            'violation' => violation_set_2,
-            'suggestion' => suggestion_2
           }
         ]
       end
@@ -288,28 +231,22 @@ describe ERBLint::Linter::ContentStyleChecker do
         expect(linter_errors.size).to eq 1
       end
 
-      it 'reports errors for `Payment Gateways` and suggests `payment gateways` but ignores the others' do
+      it 'reports errors for `Payment Gateways` and suggests `payment gateways`' do
         expect(linter_errors[0][:message]).to include 'Don\'t use `Payment Gateways`'
         expect(linter_errors[0][:message]).to include 'Do use `payment gateways`'
       end
     end
 
-    context '- violation has multiple words and first word starts with uppercase character (`Lintercorp partner`)
+    context '- violation has multiple words and first word of violation starts with uppercase character (`Lintercorp partner`)
     - suggestion has multiple words, both starting with uppercase characters (`Lintercorp Partner`)' do
       violation_set_1 = 'Lintercorp partner'
       suggestion_1 = 'Lintercorp Partner'
-      violation_set_2 = 'Lintercorp partners'
-      suggestion_2 = 'Lintercorp Partners'
 
       let(:rule_set) do
         [
           {
             'violation' => violation_set_1,
             'suggestion' => suggestion_1
-          },
-          {
-            'violation' => violation_set_2,
-            'suggestion' => suggestion_2
           }
         ]
       end
@@ -327,18 +264,10 @@ describe ERBLint::Linter::ContentStyleChecker do
       end
     end
 
-    context '- violation has a single dumb quote (`Store\'s dashboard`)' do
-      violation_set_1 = [
-        'store’s dashboard',
-        'store\'s dashboard',
-        'backend store dashboard',
-        'back-end store dashboard',
-        'dashboard'
-      ]
+    context '- file contains violation with a dumb single quote (`Store\'s dashboard`)' do
+      violation_set_1 = 'store\'s dashboard'
       suggestion_1 = 'Lintercorp dashboard'
       case_insensitive_1 = true
-      violation_set_2 = 'Lintercorp Dashboard'
-      suggestion_2 = 'Lintercorp dashboard'
 
       let(:rule_set) do
         [
@@ -346,10 +275,6 @@ describe ERBLint::Linter::ContentStyleChecker do
             'violation' => violation_set_1,
             'suggestion' => suggestion_1,
             'case_insensitive' => case_insensitive_1
-          },
-          {
-            'violation' => violation_set_2,
-            'suggestion' => suggestion_2
           }
         ]
       end
@@ -367,19 +292,11 @@ describe ERBLint::Linter::ContentStyleChecker do
       end
     end
 
-    context '- violation has a single smart quote (`Store’s dashboard`)
+    context '- violation has a smart single quote (`Store’s dashboard`)
     - violation contained in prior violation' do
-      violation_set_1 = [
-        'store’s dashboard',
-        'store\'s dashboard',
-        'backend store dashboard',
-        'back-end store dashboard',
-        'dashboard'
-      ]
+      violation_set_1 = 'store’s dashboard'
       suggestion_1 = 'Lintercorp dashboard'
       case_insensitive_1 = true
-      violation_set_2 = 'Lintercorp Dashboard'
-      suggestion_2 = 'Lintercorp dashboard'
 
       let(:rule_set) do
         [
@@ -387,10 +304,6 @@ describe ERBLint::Linter::ContentStyleChecker do
             'violation' => violation_set_1,
             'suggestion' => suggestion_1,
             'case_insensitive' => case_insensitive_1
-          },
-          {
-            'violation' => violation_set_2,
-            'suggestion' => suggestion_2
           }
         ]
       end
@@ -408,18 +321,10 @@ describe ERBLint::Linter::ContentStyleChecker do
       end
     end
 
-    context '- file has two double dumb quotes (`"backend store dashboard"`)' do
-      violation_set_1 = [
-        'store’s dashboard',
-        'store\'s dashboard',
-        'backend store dashboard',
-        'back-end store dashboard',
-        'dashboard'
-      ]
+    context '- file has a dumb double quote (`"backend store dashboard`)' do
+      violation_set_1 = 'backend store dashboard'
       suggestion_1 = 'Lintercorp dashboard'
       case_insensitive_1 = true
-      violation_set_2 = 'Lintercorp Dashboard'
-      suggestion_2 = 'Lintercorp dashboard'
 
       let(:rule_set) do
         [
@@ -427,15 +332,11 @@ describe ERBLint::Linter::ContentStyleChecker do
             'violation' => violation_set_1,
             'suggestion' => suggestion_1,
             'case_insensitive' => case_insensitive_1
-          },
-          {
-            'violation' => violation_set_2,
-            'suggestion' => suggestion_2
           }
         ]
       end
       let(:file) { <<~FILE }
-        <p>Welcome to the "backend store dashboard".</p>
+        <p>The "backend store dashboard is not what it seems.</p>
       FILE
 
       it 'reports 1 errors' do
