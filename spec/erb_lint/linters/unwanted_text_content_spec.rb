@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-describe ERBLint::Linter::ContentStyleChecker do
+describe ERBLint::Linter::UnwantedTextContent do
   let(:linter_config) do
     {
       'rule_set' => rule_set,
@@ -147,7 +147,8 @@ describe ERBLint::Linter::ContentStyleChecker do
     context '- violation starts with uppercase character (`Apps`)
     - suggestion starts with lowercase character (`apps`)
     - file contains violation (`Big Apps`)
-    - file contains two potential false positives (the string and a sentence within the string both start with `Apps`)' do
+    - file contains two potential false positives (the string and a sentence within the string both start
+      with `Apps`)' do
       violation_set_1 = 'Apps'
       suggestion_1 = 'apps'
 
@@ -160,7 +161,7 @@ describe ERBLint::Linter::ContentStyleChecker do
         ]
       end
       let(:file) { <<~FILE }
-        <p>Apps, apps, and away. Big Apps and salutations to the Figure IV crew. Did Britney sing apps, I did it again? Apps a daisy.</p>
+        <p>Apps, apps, and away. Big Apps and salutations. Did Britney sing apps, I did it again? Apps a daisy.</p>
       FILE
 
       it 'reports 1 errors' do
@@ -237,7 +238,8 @@ describe ERBLint::Linter::ContentStyleChecker do
       end
     end
 
-    context '- violation has multiple words and first word of violation starts with uppercase character (`Lintercorp partner`)
+    context '- violation has multiple words and first word of violation starts with uppercase character (`Lintercorp
+      partner`)
     - suggestion has multiple words, both starting with uppercase characters (`Lintercorp Partner`)' do
       violation_set_1 = 'Lintercorp partner'
       suggestion_1 = 'Lintercorp Partner'

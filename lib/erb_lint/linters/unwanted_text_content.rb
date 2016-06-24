@@ -3,7 +3,7 @@
 module ERBLint
   class Linter
     # Checks for content style guide violations in the text nodes of HTML files.
-    class ContentStyleChecker < Linter
+    class UnwantedTextContent < Linter
       include LinterRegistry
 
       def initialize(config)
@@ -33,7 +33,8 @@ module ERBLint
         outer_text = select_text_children(file_tree)
         outer_text ||= []
         all_text = (outer_text + inner_text)
-        # Assumes the immediate parent is on the same line for demo purposes, otherwise hardcode line_number
+        # Assumes the immediate parent is on the same line for demo purposes.
+        # Nokogiri bug: https://github.com/sparklemotion/nokogiri/issues/1493
         all_text.each do |text_node|
           line_number = text_node.parent.line unless text_node.parent.nil?
           push_errors(errors, text_node, line_number)
