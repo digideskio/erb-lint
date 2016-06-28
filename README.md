@@ -105,7 +105,7 @@ which gets used when you create a `Runner` with no config.
 
 ## Linters
 
-`erb-lint` comes with 2 linters on-board: `DeprecatedClasses` and `FinalNewline`, each with their own linter-specific options.
+`erb-lint` comes with 3 linters on-board: `DeprecatedClasses`, `FinalNewline`, and `UnwantedTextContent`, each with their own linter-specific options.
 
 ### DeprecatedClasses
 
@@ -148,6 +148,43 @@ option.
 Linter-Specific Option | Description
 -----------------------|---------------------------------------------------------
 `present`              | Whether a final newline should be present (default **true**)
+
+### UnwantedTextContent
+
+Based on DeprecatedClasses, UnwantedTextContent will find any words or phrases that violate the rule set that you provide.
+
+This `rule_set` is specified as a list of rules, each with a `violation` set and
+a corresponding `suggestion`. You can also optionally add a `case_insensitive:
+true` value to make UnwantedTextContent look for the violating terms in any
+case.
+
+Unlike DeprecatedClasses, UnwantedTextContent does not currently accept regular expressions.
+
+```ruby
+'rule_set' => [
+  {
+    'violation' => ['application', 'program'],
+    'suggestion' => "app"
+    'case_insensitive' => true
+  },
+  {
+    'violation' => ['support page'],
+    'suggestion' => "Lintercorp Help Center"
+  }
+]
+```
+
+You can also specify an addendum to be added to the end of each error message using the `addendum` option.
+The error message format is: `"Don't use #{violation}. Do use #{suggestion}"`
+or `"Don't use #{violation}. Do use #{suggestion}. #{addendum}"` if an `addendum` is present.
+
+Linter-Specific Option | Description
+-----------------------|-----------------------------------------------------------------------------------
+`rule_set`             | A list of rules, each with a `violation` and `suggestion` option.
+`violation`            | A list of strings that specify unwanted text content.
+`suggestion`           | A suggested replacement for the unwanted text content defined in `violation`.
+`case_insensitive`     | A Boolean value that determines whether the rule is case sensitive. (Optional, defaults to false if not included)
+`addendum`             | A string to be included at the end of every error message of the rule set. (Optional)
 
 ## Custom Linters
 
